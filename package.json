@@ -1,6 +1,6 @@
 {
-  "name": "makework",
-  "productName": "makework",
+  "name": "desktop-sdk-electron-sample",
+  "productName": "desktop-sdk-electron-sample",
   "version": "1.0.0",
   "description": "My Electron application description",
   "main": ".webpack/main",
@@ -14,7 +14,7 @@
   "keywords": [],
   "author": {
     "name": "Nick Faro",
-    "email": "yux50000@hotmail.com"
+    "email": "nick@recall.ai"
   },
   "license": "MIT",
   "devDependencies": {
