@@ -1,4 +1,4 @@
-# Recall.ai Desktop SDK Electron Example
+# Recall.ai Desktop SDK Electron Example (with Webpack)
 
 This is a minimal example application which can get you started quickly, and is ready to run `npm start` and `npm run make` on! This repo is intended to be used as a template for you to start off with. If you want a more feature-complete example application, take a look at [Muesli.](https://github.com/recallai/muesli-public)
 
