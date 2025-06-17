@@ -37,6 +37,11 @@
     "node-loader": "^2.1.0",
     "style-loader": "^3.3.4"
   },
+  "overrides": {
+    "@electron/packager": {
+      "@electron/osx-sign": "github:recallai/osx-sign"
+    }
+  },
   "dependencies": {
     "@recallai/desktop-sdk": "^2025.4.10-ceb0bb084506974d0a6c352042b886a98ee8cd3d",
     "@timfish/forge-externals-plugin": "^0.2.1",
