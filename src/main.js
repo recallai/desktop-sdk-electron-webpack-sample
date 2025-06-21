@@ -80,8 +80,7 @@ async function startRecording(windowId) {
 
     RecallAiSdk.startRecording({
       windowId: windowId,
-      uploadToken: upload_token,
-      realtimeEvents: [],
+      uploadToken: upload_token
     });
   } catch (error) {
     console.error("Error in startRecording:", error.message);
