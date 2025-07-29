@@ -23,8 +23,9 @@ let state = {
 
 function sendState() {
   try {
-    if (!mainWindow.isDestroyed() && !mainWindow.webContents.isDestroyed())
+    if (!mainWindow.isDestroyed() && !mainWindow.webContents.isDestroyed()) {
       mainWindow.webContents.send('state', state);
+    }
   } catch (e) {
     console.error("Failed to send message to renderer:", e);
   }
@@ -45,10 +46,7 @@ const createWindow = () => {
 
   mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);
 
-  console.log('=== State sent to SDK:', state);
-  mainWindow.webContents.on('did-finish-load', () => {
-    sendState();
-  });
+  console.log('=== Initial state:', state);
 };
 
 function showWindow() {
@@ -258,6 +256,7 @@ app.on('ready', () => {
   // init after event listeners are set up
   RecallAiSdk.init({
     api_url: "https://api.recall.ai",
+    acquirePermissionsOnStartup: ["microphone", "accessibility", "screen-capture"],
     config: {}
   });
   
@@ -265,6 +264,10 @@ app.on('ready', () => {
   ipcMain.on('message-from-renderer', async (event, arg) => {
     console.log('message-from-renderer', arg);
     switch (arg.command) {
+      case 'renderer-ready':
+        console.log('Renderer is ready, sending initial state');
+        sendState();
+        break;
       case 'reupload':
         RecallAiSdk.uploadRecording({ windowId: arg.id });
         break;
