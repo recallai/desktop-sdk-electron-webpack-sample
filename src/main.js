@@ -10,7 +10,6 @@ const __dirname = path.dirname(__filename);
 
 import { app, BrowserWindow, ipcMain, shell, dialog, Notification, Tray, Menu } from 'electron';
 import path from 'node:path';
-import isDev from 'electron-is-dev';
 import RecallAiSdk from '@recallai/desktop-sdk';
 
 let mainWindow;
