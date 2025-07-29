@@ -90,7 +90,7 @@ async function startRecording(windowId) {
       `Failed to start recording:\n${error.message}`
     );
 
-    app.dock.bounce('critical');
+    if (process.platform === "darwin") app.dock.bounce('critical');
   }
 }
 
@@ -128,43 +128,18 @@ app.on('ready', () => {
     // with all windows closed.
   });
 
-  RecallAiSdk.init({
-    dev: isDev,
-    api_url: "https://api.recall.ai",
-    config: {}
-  });
-
-  ipcMain.on('message-from-renderer', async (event, arg) => {
-    console.log('message-from-renderer', arg);
-    switch (arg.command) {
-      case 'open-recording-folder':
-        shell.openPath("/tmp");
-        break;
-      case 'reupload':
-        RecallAiSdk.uploadRecording({ windowId: arg.id });
-        break;
-      case 'start-recording':
-        if (!detectedMeeting) {
-          dialog.showMessageBoxSync(null, { message: "There is no meeting in progress." });
-          break;
-        }
-        await startRecording(detectedMeeting.window.id);
-        break;
-      case 'stop-recording':
-        RecallAiSdk.stopRecording({ windowId: detectedMeeting.window.id });
-        break;
-    }
-  });
-
-  RecallAiSdk.addEventListener('meeting-updated', async (evt) => {
-    console.log("Meeting updated", evt);
-  });
-
+  
   RecallAiSdk.addEventListener('permissions-granted', async (evt) => {
     console.log("Permissions granted, ready to record");
     state.permissions_granted = true;
     sendState();
   });
+  
+
+  RecallAiSdk.addEventListener('meeting-updated', async (evt) => {
+    console.log("Meeting updated", evt);
+  });
+
 
   RecallAiSdk.addEventListener('realtime-event', async (evt) => {
     console.log(evt);
@@ -195,7 +170,7 @@ app.on('ready', () => {
       body: 'An error occured.',
     }).show();
 
-    app.dock.bounce('critical');
+    if (process.platform === "darwin") app.dock.bounce('critical');
 
     console.error("ERROR: ", type, message);
   });
@@ -258,19 +233,19 @@ app.on('ready', () => {
     try {
       switch (event.sdk.state.code) {
         case 'recording':
-          app.dock.setBadge('Recording');
+          if (process.platform === "darwin") app.dock.setBadge('Recording');
           console.log('=== Recording started:', event);
           state.recording = true;
           sendState();
           break;
         case 'idle':
-          app.dock.setBadge("");
+          if (process.platform === "darwin") app.dock.setBadge("");
           console.log('=== Recording idle:', event);
           state.recording = false;
           sendState();
           break;
         case 'paused':
-          app.dock.setBadge("Paused");
+          if (process.platform === "darwin") app.dock.setBadge("Paused");
           console.log('=== Recording paused:', event);
           state.recording = false;
           sendState();
@@ -278,6 +253,32 @@ app.on('ready', () => {
       }
     } catch (e) {
       console.error(e);
+    }
+  });
+
+  // init after event listeners are set up
+  RecallAiSdk.init({
+    api_url: "https://api.recall.ai",
+    config: {}
+  });
+  
+
+  ipcMain.on('message-from-renderer', async (event, arg) => {
+    console.log('message-from-renderer', arg);
+    switch (arg.command) {
+      case 'reupload':
+        RecallAiSdk.uploadRecording({ windowId: arg.id });
+        break;
+      case 'start-recording':
+        if (!detectedMeeting) {
+          dialog.showMessageBoxSync(null, { message: "There is no meeting in progress." });
+          break;
+        }
+        await startRecording(detectedMeeting.window.id);
+        break;
+      case 'stop-recording':
+        RecallAiSdk.stopRecording({ windowId: detectedMeeting.window.id });
+        break;
     }
   });
 });

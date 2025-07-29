@@ -107,18 +107,6 @@ const App = () => {
             </div>
           ))}
         </div>
-        <div className="open-folder-container">
-          <button
-            className="open-folder-btn"
-            onClick={() => {
-              electronAPI.send("message-from-renderer", {
-                command: "open-recording-folder"
-              });
-            }}
-          >
-            Open Recordings Folder
-          </button>
-        </div>
       </div>
 
       <main className="main-content">
