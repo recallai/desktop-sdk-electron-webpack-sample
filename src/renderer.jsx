@@ -42,38 +42,26 @@ const App = () => {
     permissions_granted: false,
     meetings: [],
   });
-  const [apiKey, setApiKey] = React.useState("");
   const [canTryStart, setCanTryStart] = React.useState(true);
   const [selectedMeeting, setSelectedMeeting] = React.useState(null);
 
   React.useEffect(() => {
+    console.log("Setting up IPC listeners...");
+    
     electronAPI.on("state", (newState) => {
       console.log("=== State received from SDK:", newState);
       setSdkState(newState);
     });
 
-    electronAPI.on("api-key", (apiKey) => {
-      setApiKey(apiKey);
-    });
-
+    // Signal that renderer is ready to receive state updates
     electronAPI.send("message-from-renderer", {
-      command: "get-api-key",
+      command: "renderer-ready",
     });
 
     return () => {
       electronAPI.removeAllListeners("state");
-      electronAPI.removeAllListeners("api-key");
     };
   }, []);
-
-  const handleApiKeyChange = (e) => {
-    const newApiKey = e.target.value;
-    setApiKey(newApiKey);
-    electronAPI.send("message-from-renderer", {
-      command: "set-api-key",
-      apiKey: newApiKey,
-    });
-  };
 
   const handleReupload = (id) => {
     electronAPI.send("message-from-renderer", {
@@ -106,18 +94,6 @@ const App = () => {
               </div>
             </div>
           ))}
-        </div>
-        <div className="open-folder-container">
-          <button
-            className="open-folder-btn"
-            onClick={() => {
-              electronAPI.send("message-from-renderer", {
-                command: "open-recording-folder"
-              });
-            }}
-          >
-            Open Recordings Folder
-          </button>
         </div>
       </div>
 

@@ -43,11 +43,10 @@
     }
   },
   "dependencies": {
-    "@recallai/desktop-sdk": "^2025.4.10-ceb0bb084506974d0a6c352042b886a98ee8cd3d",
+    "@recallai/desktop-sdk": "^1.0.1",
     "@timfish/forge-externals-plugin": "^0.2.1",
     "axios": "^1.8.4",
     "dotenv": "^16.4.7",
-    "electron-is-dev": "^3.0.1",
     "electron-prompt": "^1.7.0",
     "electron-squirrel-startup": "^1.0.1",
     "lucide-react": "^0.487.0",

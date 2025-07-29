@@ -270,37 +270,3 @@ body, html {
   50% { transform: scale(1.05); }
   100% { transform: scale(1); }
 }
-
-.open-folder-container {
-    margin-top: 20px;
-    padding: 0 10px; /* Add horizontal padding for consistency */
-}
-
-.open-folder-btn {
-    width: 100%; /* Full width */
-    padding: 12px 16px; /* Vertical and horizontal padding */
-    background-color: #f0f0f0; /* Light grey background */
-    color: #333333; /* Darker text for better contrast */
-    border: none;
-    border-radius: 6px; /* Slightly rounded corners */
-    font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background-color 0.3s ease, box-shadow 0.2s ease;
-    text-align: center; /* Center text */
-}
-
-.open-folder-btn:hover {
-    background-color: #e0e0e0; /* Slightly darker grey on hover */
-}
-
-.open-folder-btn:focus {
-    outline: none;
-    box-shadow: 0 0 0 3px rgba(160, 160, 160, 0.5); /* Focus outline */
-}
-
-.open-folder-btn::before {
-    content: "📁"; /* Folder icon emoji */
-    margin-right: 8px;
-    font-size: 16px;
-}
