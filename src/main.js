@@ -57,10 +57,10 @@ function showWindow() {
 }
 
 async function createDesktopSdkUpload() {
-  const url = 'https://api.recall.ai/api/v1/sdk-upload/';
+  const url = `${process.env.RECALLAI_API_URL}/api/v1/sdk-upload/`;
 
   const response = await axios.post(url, {}, {
-    headers: { 'Authorization': `Token ${process.env.API_KEY}` },
+    headers: { 'Authorization': `Token ${process.env.RECALLAI_API_KEY}` },
     timeout: 3000,
   });
 
@@ -125,13 +125,13 @@ app.on('ready', () => {
     // with all windows closed.
   });
 
-  
+
   RecallAiSdk.addEventListener('permissions-granted', async (evt) => {
     console.log("Permissions granted, ready to record");
     state.permissions_granted = true;
     sendState();
   });
-  
+
 
   RecallAiSdk.addEventListener('meeting-updated', async (evt) => {
     console.log("Meeting updated", evt);
@@ -255,11 +255,11 @@ app.on('ready', () => {
 
   // init after event listeners are set up
   RecallAiSdk.init({
-    api_url: "https://api.recall.ai",
+    api_url: process.env.RECALLAI_API_URL,
     acquirePermissionsOnStartup: ["microphone", "accessibility", "screen-capture"],
     config: {}
   });
-  
+
 
   ipcMain.on('message-from-renderer', async (event, arg) => {
     console.log('message-from-renderer', arg);
